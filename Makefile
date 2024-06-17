@@ -20,6 +20,8 @@ install: ## Install tools
 up: ## Start k3d cluster
 	@k3d cluster create vsamdele --config $(K3D_CONFIG)
 	cd nginx && $(MAKE) install
+	cd prometheus && $(MAKE) install
+	cd grafana && $(MAKE) install
 
 down: ## Down k3d cluster
 	@k3d cluster delete --config $(K3D_CONFIG)

@@ -1,0 +1,12 @@
+prometheus:
+  server:
+    baseURL: https://prometheus.vsamdele.space
+    ingress:
+      enabled: true
+      ingressClassName: nginx
+      hosts:
+        - prometheus.vsamdele.space
+      tls:
+        - secretName: prometheus-tls
+          hosts:
+            - prometheus.vsamdele.space
