@@ -1,0 +1,44 @@
+drone:
+  ingress:
+    enabled: true
+    className: nginx
+    hosts:
+      - host: drone.vsamdele.space
+        paths:
+          - path: /
+            pathType: Prefix
+    tls:
+      - secretName: drone-tls
+        hosts:
+          - drone.vsamdele.space
+  env:
+    DRONE_SERVER_HOST: drone.vsamdele.space
+    DRONE_SERVER_PROTO: https
+    DRONE_RPC_SECRET: f6b4e8bb804b4b669282e1b141102f5b
+    DRONE_GITEA_CLIENT_ID: e717f8a8-5e59-4235-af43-7cd97010f548
+    DRONE_GITEA_CLIENT_SECRET: gto_bbknx6geghsamwacvvgv6diqc4p2k2tmnd2z2dyzb7lws4kfveeq
+    DRONE_GITEA_SERVER: https://gitea.vsamdele.space
+    SSL_CERT_FILE: /etc/ssl/certs/ca-certificates/ca.crt
+  extraVolumes:
+    - name: ca-certificates
+      secret:
+        secretName: gitea-ca-cert
+  extraVolumeMounts:
+    - name: ca-certificates
+      mountPath: /etc/ssl/certs/ca-certificates
+      readOnly: true
+
+drone-runner-kube:
+  env:
+    DRONE_RPC_HOST: drone.vsamdele.space
+    DRONE_RPC_PROTO: https
+    DRONE_RPC_SECRET: f6b4e8bb804b4b669282e1b141102f5b
+    SSL_CERT_FILE: /etc/ssl/certs/ca-certificates/ca.crt
+  extraVolumes:
+    - name: ca-certificates
+      secret:
+        secretName: drone-gitea-ca-cert
+  extraVolumeMounts:
+    - name: ca-certificates
+      mountPath: /etc/ssl/certs/ca-certificates
+      readOnly: true

@@ -1,0 +1,36 @@
+apiVersion: k3d.io/v1alpha5
+kind: Simple
+metadata:
+  name: vsamdele
+servers: 1
+agents: 2
+image: rancher/k3s:v1.30.1-k3s1
+ports:
+  - port: 0.0.0.0:80:30080/tcp
+  - port: 0.0.0.0:443:30443/tcp
+  - port: 0.0.0.0:6443:6443/tcp
+registries:
+  create:
+    name: k3d-vsamdele-registry
+    host: 0.0.0.0
+    hostPort: "5000"
+options:
+  k3d:
+    wait: true
+    timeout: 6m0s
+    disableLoadbalancer: false
+    disableImageVolume: false
+    disableRollback: false
+  k3s:
+    extraArgs:
+      - arg: --disable=traefik
+        nodeFilters:
+          - server:*
+    nodeLabels: []
+  kubeconfig:
+    updateDefaultKubeconfig: true
+    switchCurrentContext: true
+  runtime:
+    gpuRequest: ""
+    serversMemory: ""
+    agentsMemory: ""
