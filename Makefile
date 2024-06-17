@@ -22,6 +22,7 @@ up: ## Start k3d cluster
 	cd nginx && $(MAKE) install
 	cd prometheus && $(MAKE) install
 	cd grafana && $(MAKE) install
+	cd argocd && $(MAKE) install
 
 down: ## Down k3d cluster
 	@k3d cluster delete --config $(K3D_CONFIG)
